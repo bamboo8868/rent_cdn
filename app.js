@@ -41,12 +41,13 @@ async function download(app_id) {
             //     httpsAgent: agent
             // });
             let tmp = await axios.get(gameDetailUrl);
-            console.log(tmp);
-
+            fs.writeFileSync("1.html",tmp.data);
             let $ = cheerio.load(tmp.data);
             let src = $("#gameHeaderImageCtn").find('img[class=game_header_image_full]').attr("src");
-
-
+            if(!src) {
+                src = $(".img_ctn").find("img").attr("src");
+            }
+            console.log(src);
             if (src) {
                 const response = await axios({
                     url:src,
